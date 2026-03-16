@@ -5,7 +5,8 @@ services:
     runtime: node
     rootDir: web
     plan: free
-    buildCommand: npm ci && npm run build
+    # Render sets NODE_ENV=production; ensure dev deps (tailwind/postcss) are installed for Next build.
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
