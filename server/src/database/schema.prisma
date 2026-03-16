@@ -1,0 +1,42 @@
+// Refusal Bot - PostgreSQL schema via Prisma
+// Stores and refund tickets for policy-compliant response generation
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id         String   @id @default(cuid())
+  name       String
+  apiKey     String   @unique @map("api_key")
+  policyText String   @map("policy_text") @db.Text
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  tickets Ticket[]
+
+  @@map("stores")
+}
+
+model Ticket {
+  id              String   @id @default(cuid())
+  storeId         String   @map("store_id")
+  customerMessage String   @map("customer_message") @db.Text
+  aiResponse      String?  @map("ai_response") @db.Text
+  decision        String?  // approve | deny
+  policyClause    String?  @map("policy_clause") @db.Text
+  reason          String?  @db.Text
+  alternativeOffer String? @map("alternative_offer") @db.Text
+  orderData       Json?    @map("order_data")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@index([createdAt])
+  @@map("tickets")
+}

@@ -1,0 +1,40 @@
+{
+  "name": "refusal-bot",
+  "version": "1.0.0",
+  "description": "Production-ready AI SaaS backend for analyzing ecommerce refund requests",
+  "type": "module",
+  "main": "src/server.js",
+  "prisma": {
+    "schema": "src/database/schema.prisma"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "worker": "node src/workers/refundWorker.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bullmq": "^5.34.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "ioredis": "^5.4.1",
+    "openai": "^4.73.0",
+    "prisma": "^5.22.0",
+    "winston": "^3.15.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  }
+}

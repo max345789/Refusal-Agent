@@ -1,0 +1,59 @@
+services:
+  # Public marketing site (Next.js)
+  - type: web
+    name: refusal-bot-web
+    runtime: node
+    rootDir: web
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set this to your deployed API base URL.
+      - key: NEXT_PUBLIC_API_URL
+        value: https://example-api.your-domain.com
+      # Enable app routes for the self-serve MVP (onboarding -> dashboard).
+      - key: NEXT_PUBLIC_ENABLE_APP
+        value: "1"
+
+  # API (Express + Prisma)
+  - type: web
+    name: refusal-bot-api
+    runtime: node
+    rootDir: server
+    plan: starter
+    buildCommand: npm ci && npm run db:generate
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Render injects PORT automatically.
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: INTERNAL_API_KEY
+        sync: false
+
+  # Background worker (optional, but recommended if you use BullMQ async mode)
+  - type: worker
+    name: refusal-bot-worker
+    runtime: node
+    rootDir: server
+    plan: starter
+    buildCommand: npm ci && npm run db:generate
+    startCommand: npm run worker
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: INTERNAL_API_KEY
+        sync: false

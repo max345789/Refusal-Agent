@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Neo-brutalism: flat surfaces, loud accents, hard shadows */
+  --background: #f6f6f6;
+  --surface: #ffffff;
+  --ink: #121212;
+  --muted-ink: rgba(18, 18, 18, 0.68);
+
+  --primary: #2f6bff;
+  --primary-dark: #1b4dd6;
+  --secondary: #ff2d8d;
+  --highlight: #20e37b;
+  --warning: #ffb800;
+  --danger: #ff3d00;
+
+  --text-primary: var(--ink);
+  --text-secondary: var(--muted-ink);
+
+  --nb-border: 3px;
+  --nb-radius: 14px;
+  --nb-shadow-x: 10px;
+  --nb-shadow-y: 10px;
+}
+
+body {
+  background:
+    linear-gradient(0deg, rgba(18,18,18,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18,18,18,0.035) 1px, transparent 1px),
+    radial-gradient(900px 700px at 15% 20%, rgba(47,107,255,0.14), transparent 60%),
+    radial-gradient(800px 700px at 85% 25%, rgba(255,45,141,0.12), transparent 62%),
+    radial-gradient(700px 700px at 55% 92%, rgba(255,184,0,0.12), transparent 60%),
+    var(--background);
+  background-size: 44px 44px, 44px 44px, auto, auto, auto, auto;
+  color: var(--text-primary);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: var(--font-body), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Neo-brutalism utilities */
+@layer components {
+  .nb-surface {
+    background: var(--surface);
+    border: var(--nb-border) solid var(--ink);
+    border-radius: var(--nb-radius);
+    box-shadow: var(--nb-shadow-x) var(--nb-shadow-y) 0 0 var(--ink);
+  }
+
+  .nb-surface-soft {
+    background: var(--surface);
+    border: 2px solid rgba(18, 18, 18, 0.25);
+    border-radius: 16px;
+  }
+
+  .nb-pressable {
+    transform: translate(0, 0);
+    transition: transform 110ms ease, box-shadow 110ms ease, filter 110ms ease;
+  }
+
+  .nb-pressable:hover {
+    filter: saturate(1.1);
+  }
+
+  .nb-pressable:active {
+    transform: translate(6px, 6px);
+    box-shadow: 4px 4px 0 0 var(--ink);
+  }
+
+  .nb-chip {
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 4px 4px 0 0 var(--ink);
+  }
+
+  .nb-link {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 3px;
+  }
+
+  .nb-input {
+    width: 100%;
+    background: var(--surface);
+    border: var(--nb-border) solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 8px 8px 0 0 var(--ink);
+    padding: 12px 14px;
+    font-size: 14px;
+    outline: none;
+    transition: transform 110ms ease, box-shadow 110ms ease;
+  }
+
+  .nb-input:focus {
+    transform: translate(-1px, -1px);
+    box-shadow: 10px 10px 0 0 var(--ink);
+  }
+
+  .nb-textarea {
+    width: 100%;
+    background: var(--surface);
+    border: var(--nb-border) solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 8px 8px 0 0 var(--ink);
+    padding: 12px 14px;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    transition: transform 110ms ease, box-shadow 110ms ease;
+  }
+
+  .nb-textarea:focus {
+    transform: translate(-1px, -1px);
+    box-shadow: 10px 10px 0 0 var(--ink);
+  }
+
+  .nb-label {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+  }
+
+  .nb-help {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .font-heading {
+    font-family: var(--font-heading), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    letter-spacing: -0.02em;
+  }
+}

@@ -1,0 +1,19 @@
+node_modules/
+.next/
+dist/
+build/
+.DS_Store
+
+# Env files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Prisma
+server/node_modules/.prisma/
+server/prisma/migrations/
