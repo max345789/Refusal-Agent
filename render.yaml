@@ -4,7 +4,7 @@ services:
     name: refusal-bot-web
     runtime: node
     rootDir: web
-    plan: starter
+    plan: free
     buildCommand: npm ci && npm run build
     startCommand: npm run start
     envVars:
@@ -22,33 +22,13 @@ services:
     name: refusal-bot-api
     runtime: node
     rootDir: server
-    plan: starter
+    plan: free
     buildCommand: npm ci && npm run db:generate
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
       # Render injects PORT automatically.
-      - key: DATABASE_URL
-        sync: false
-      - key: REDIS_URL
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: INTERNAL_API_KEY
-        sync: false
-
-  # Background worker (optional, but recommended if you use BullMQ async mode)
-  - type: worker
-    name: refusal-bot-worker
-    runtime: node
-    rootDir: server
-    plan: starter
-    buildCommand: npm ci && npm run db:generate
-    startCommand: npm run worker
-    envVars:
-      - key: NODE_ENV
-        value: production
       - key: DATABASE_URL
         sync: false
       - key: REDIS_URL
