@@ -6,14 +6,12 @@
 import { Queue } from 'bullmq';
 import { logger } from './logger.js';
 
-const hasRedis = Boolean(process.env.REDIS_URL || process.env.REDIS_HOST);
+// Disable queue entirely when no REDIS_URL provided (avoids localhost connect).
+const hasRedis = Boolean(process.env.REDIS_URL);
 
 export const refundQueue = hasRedis
   ? new Queue('refund-analysis', {
-      connection: process.env.REDIS_URL || {
-        host: process.env.REDIS_HOST ?? 'localhost',
-        port: parseInt(process.env.REDIS_PORT ?? '6379', 10),
-      },
+      connection: process.env.REDIS_URL,
       defaultJobOptions: {
         attempts: 3,
         backoff: { type: 'exponential', delay: 1000 },
