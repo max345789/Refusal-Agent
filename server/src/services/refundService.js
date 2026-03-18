@@ -11,11 +11,18 @@ import { logger } from '../utils/logger.js';
 /**
  * Create a ticket and optionally run analysis sync or async.
  */
-export async function createTicket(storeId, { customer_message, order_data }, { async: useQueue = false } = {}) {
+export async function createTicket(
+  storeId,
+  { customer_message, order_data },
+  { async: requestedQueue = false } = {}
+) {
   const store = await prisma.store.findUnique({ where: { id: storeId } });
   if (!store) {
     throw new Error('Store not found');
   }
+
+  const queuesEnabled = Boolean(process.env.REDIS_URL);
+  const useQueue = queuesEnabled && requestedQueue;
 
   const ticket = await prisma.ticket.create({
     data: {
@@ -34,6 +41,8 @@ export async function createTicket(storeId, { customer_message, order_data }, { 
       policyText: store.policyText,
     });
     return { ticket, queued: true };
+  } else if (requestedQueue && !queuesEnabled) {
+    logger.warn('Async queue requested but REDIS_URL not set; running sync instead');
   }
 
   const analysis = await analyzeRefund({
