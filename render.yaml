@@ -24,7 +24,8 @@ services:
     runtime: node
     rootDir: server
     plan: free
-    buildCommand: npm ci && npm run db:generate
+    # One-off schema push during build to avoid paid shell; remove after first successful deploy if desired.
+    buildCommand: npm ci && npm run db:generate && DATABASE_URL=$DATABASE_URL npx prisma db push --schema src/database/schema.prisma --accept-data-loss || exit 1
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
